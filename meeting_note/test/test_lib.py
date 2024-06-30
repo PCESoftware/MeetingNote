@@ -3,6 +3,8 @@ import time
 import os
 import functools
 from meeting_note.lib.record import MicrophoneRecorder
+from meeting_note.lib.whisper import WhisperModel
+from meeting_note.helper.helper import wer
 
 def test_record():
     data_folder = os.path.join(os.path.dirname(__file__), "data")
@@ -16,6 +18,8 @@ def test_record():
     # 2. start_stream
     recorder.start_stream()
     # 3. record for some seconds
+    # with open(save_path, 'wb') as f:
+    #     recorder.record_flow(file_name=f, duration=5)
     recorder.record_flow(file_name=save_path, duration=5)
     # 4. close the stream
     recorder.close_stream()
@@ -40,5 +44,14 @@ def test_record_async():
     recorder.close_stream()
     thread.join()
 
-# def test_whisper():
-#     transcript()
+def test_whisper():
+    data_folder = os.path.join(os.path.dirname(__file__), "data")
+    load_path_1 = os.path.join(data_folder, "test1.wav")
+    load_path_2 = os.path.join(data_folder, "test2.wav")
+    whisper = WhisperModel()
+    with open(load_path_1, 'rb') as f:
+        result = whisper.transcribe(f)
+    print(result)
+    with open(load_path_2, 'rb') as f:
+        result = whisper.transcribe(f)
+    print(result)
