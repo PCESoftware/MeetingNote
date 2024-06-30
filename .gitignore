@@ -2,3 +2,6 @@
 *.wav
 meeting_note/notebook
 meeting_note/lib/__init__.py
+build
+dist
+main.spec
