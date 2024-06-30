@@ -1,4 +1,5 @@
 from openai import OpenAI
+import traceback
 
 
 class WhisperModel:
@@ -8,9 +9,16 @@ class WhisperModel:
         self.prefer_language = prefer_language
 
     def transcribe(self, f):
-        params = {}
-        if self.prefer_language is not None:
-            params['language'] = self.prefer_language
-        transcription = self.client.audio.transcriptions.create(
-            model=self.model, file=f, response_format="verbose_json", **params)
-        return {"text": transcription.text, "language": transcription.language}
+        try:
+            params = {}
+            if self.prefer_language is not None:
+                params['language'] = self.prefer_language
+            transcription = self.client.audio.transcriptions.create(
+                model=self.model, file=f, response_format="verbose_json", **params)
+            return {"text": transcription.text, "language": transcription.language}
+        except Exception:
+            raise WhisperModelError(traceback.format_exc())
+
+
+class WhisperModelError(Exception):
+    pass

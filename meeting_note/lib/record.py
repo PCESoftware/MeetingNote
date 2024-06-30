@@ -71,16 +71,16 @@ class MicrophoneRecorder:
                     break
                 try:
                     self._lock.acquire()
-                    data = self.stream.read(self.config.chunk)
+                    if self.stream is not None:
+                        data = self.stream.read(self.config.chunk)
+                        wf.writeframes(data)
+                        current_duration += self.config.chunk * 1.0 / self.config.rate
                 finally:
                     self._lock.release()
-                wf.writeframes(data)
-                current_duration += self.config.chunk * 1.0 / self.config.rate
         except OSError:
             # closed
             pass
         finally:
-            print("record_flow_success")
             wf.close()
 
     def close_stream(self):

@@ -1,0 +1,12 @@
+record:
+    rate: 44100
+    chunk: 1024
+    channels: 1
+    device_id: 1
+
+transcribe:
+    model: whisper-1
+    language: en
+
+summary:
+    model: gpt-3.5-turbo
