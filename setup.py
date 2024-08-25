@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='meeting_note',
-    version='1.0.0',
+    version='1.0.2',
     description='A Whisper + ChatGPT Demo for meeting note recording and summarization',
     author='Scihacker',
     author_email='sjtuzlp@gmail.com',
