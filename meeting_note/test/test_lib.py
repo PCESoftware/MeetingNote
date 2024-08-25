@@ -53,14 +53,21 @@ def test_whisper():
     load_path_1 = os.path.join(data_folder, "test1.wav")
     load_path_2 = os.path.join(data_folder, "test2.wav")
     whisper = WhisperModel()
-    with open(load_path_1, 'rb') as f:
-        result = whisper.transcribe(f)
+    result = whisper.transcribe(load_path_1)
     assert (result["language"] == "chinese")
     assert (wer(result['text'], "走到路上腳步多 我也習慣了") < 0.2)
-    with open(load_path_2, 'rb') as f:
-        result = whisper.transcribe(f)
+    result = whisper.transcribe(load_path_2)
     assert (result["language"].lower() == "english")
     assert (wer(result['text'], "In Germany, over 100,000 tons of diapers are discarded each year.") < 0.2)
+
+
+def test_whisper_split():
+    data_folder = os.path.join(os.path.dirname(__file__), "data")
+    load_path_1 = os.path.join(data_folder, "1720168273.wav")
+    whisper = WhisperModel()
+    result = whisper.transcribe(load_path_1)
+    # with open("data.txt", 'w') as f:
+    #     f.write(result['text'])
 
 
 def test_summary():
@@ -71,3 +78,4 @@ The user messages provide requests or comments for the assistant to respond to. 
 Including conversation history is important when user instructions refer to prior messages. In the example above, the user’s final question of "Where was it played?" only makes sense in the context of the prior messages about the World Series of 2020. Because the models have no memory of past requests, all relevant information must be supplied as part of the conversation history in each request. If a conversation cannot fit within the model’s token limit, it will need to be shortened in some way."""
     model = SummarizeModel()
     result = model.infer(paragraph)
+    print(result)

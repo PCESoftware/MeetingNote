@@ -49,8 +49,7 @@ class App:
         self.recorder.close_stream()
         self.thread.join()
         self.thread = None
-        with open(self.files[-1], 'rb') as f:
-            text = self.whisper.transcribe(f)["text"]
+        text = self.whisper.transcribe(self.files[-1])["text"]
         self.text.append(text)
         path_name = os.path.basename(self.files[-1])
         print("{}: {}".format(path_name, text), flush=True)
